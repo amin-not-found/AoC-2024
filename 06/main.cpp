@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-#include "../util/point.cpp"
+#include "../util/util.cpp"
 
 using Visit = std::pair<util::point, util::point>;
 
@@ -28,17 +28,15 @@ Outcome walk_and_check_loops(
     const std::vector<std::string>& lines, util::point pos
 ) {
     std::unordered_set<Visit, hash_visit> visited;
+    util::rect rect(0,0, lines[0].size(),lines.size());
     util::point direction(0, -1);
-    int width = lines[0].size();
-    int height = lines.size();
     util::point new_pos;
 
     while (true) {
         visited.emplace(pos, direction);
         new_pos = pos + direction;
 
-        if (new_pos.x < 0 || new_pos.x >= width || new_pos.y < 0 ||
-            new_pos.y >= height)
+        if(!rect.contains(new_pos))
             return {visited, false};
 
         // check for loops

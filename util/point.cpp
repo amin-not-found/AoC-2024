@@ -1,3 +1,6 @@
+#ifndef UTIL_POINT
+#define UTIL_POINT
+
 #include <ostream>
 
 namespace util {
@@ -13,6 +16,10 @@ class point {
 
     point operator+(const point& other) const {
         return point(x + other.x, y + other.y);
+    }
+
+    point operator-(const point& other) const {
+        return point(x - other.x, y - other.y);
     }
 
     bool operator==(const point& other) const {
@@ -37,3 +44,4 @@ struct hash<util::point> {
     }
 };
 };  // namespace std
+#endif

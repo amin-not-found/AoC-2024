@@ -1,7 +1,8 @@
-#include <complex>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <vector>
+#include "../util/util.cpp"
 
 void input(std::vector<std::string> &lines) {
     std::ifstream file("04/input");
@@ -17,13 +18,13 @@ void input(std::vector<std::string> &lines) {
 }
 
 int count_xmas(
-    const std::vector<std::string> &lines, std::complex<int> direction
+    const std::vector<std::string> &lines, util::point direction
 ) {
     int count = 0;
-    size_t start_x = (direction.real() < 0) * 3;
-    size_t start_y = (direction.imag() < 0) * 3;
-    size_t end_x = lines[0].size() + (direction.real() > 0) * -3;
-    size_t end_y = lines.size() + (direction.imag() > 0) * -3;
+    size_t start_x = (direction.x < 0) * 3;
+    size_t start_y = (direction.y < 0) * 3;
+    size_t end_x = lines[0].size() + (direction.x > 0) * -3;
+    size_t end_y = lines.size() + (direction.y > 0) * -3;
 
     std::string word;
     for (size_t i = start_y; i < end_y; i++) {
@@ -31,7 +32,7 @@ int count_xmas(
             word = "";
             for (size_t k = 0; k < 4; k++) {
                 word +=
-                    lines[i + k * direction.imag()][j + k * direction.real()];
+                    lines[i + k * direction.y][j + k * direction.x];
             }
             // std::cout << word << "\n";
 
@@ -45,13 +46,13 @@ int part1(const std::vector<std::string> &lines) {
     int count = 0;
     // using complex numbers to represent x and y direction:
     // horizontal
-    count += count_xmas(lines, std::complex<int>(1, 0));
+    count += count_xmas(lines, util::point(1, 0));
     // vertical
-    count += count_xmas(lines, std::complex<int>(0, 1));
+    count += count_xmas(lines, util::point(0, 1));
     // left diagonal
-    count += count_xmas(lines, std::complex<int>(1, 1));
+    count += count_xmas(lines, util::point(1, 1));
     // right diagonal
-    count += count_xmas(lines, std::complex<int>(1, -1));
+    count += count_xmas(lines, util::point(1, -1));
 
     return count;
 }
